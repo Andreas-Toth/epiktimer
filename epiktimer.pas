@@ -67,7 +67,7 @@ interface
 
 uses
 {$IFDEF Windows}
-  Windows, MMSystem,
+  Windows,
 {$ELSE}
   unix, unixutil, baseunix,
   {$IFDEF LINUX}
@@ -314,8 +314,12 @@ implementation
 }
 
 const
-  NanoPerSec = 1000000000;
+  //NanoPerSec = 1000000000;
+  {$IFNDEF WINDOWS}
+    {$IF defined(LINUX)} {or defined(FreeBSD)}
   NanoPerMilli = 1000000;
+    {$ENDIF LINUX}
+  {$ENDIF WINDOWS}
   MilliPerSec = 1000;
 
 
@@ -392,6 +396,7 @@ function NullHardwareTicks:TickType; begin Result:=0 end;
 function SystemTicks: TickType;
 {$IFDEF WINDOWS}
 begin
+  Result := 0;
   QueryPerformanceCounter(Result);
 {$ELSE}
   {$IF defined(LINUX)} {or defined(FreeBSD)}  // FreeBSD disabled - waiting for FPC to catch up
@@ -796,4 +801,3 @@ begin
 end;
 
 end.
-

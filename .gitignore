@@ -6,4 +6,5 @@
 *.cgi
 *.exe
 *.log
-Bin/images/*.bmp
+lib
+backup
